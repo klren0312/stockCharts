@@ -92,6 +92,22 @@ for (var i = 0; i < 12; i++) {
       name: 'A股' + (i + 1) + '月集合',
       data: obj[i + 1]
     }],
+    tooltip: {
+      dateTimeLabelFormats:{
+        millisecond: '',
+        second: '',
+        minute: '',
+        hour: '',
+        day: '',
+        week: '',
+        month: '',
+        year: '%Y'
+      },
+      // formatter: function () {
+      //   console.log(this.points)
+      //   return 
+      // }
+    },
     responsive: {
       rules: [{
         condition: {
