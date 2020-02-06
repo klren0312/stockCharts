@@ -89,7 +89,7 @@ for (var i = 0; i < 12; i++) {
     }],
     series: [{
       type: 'line',
-      name: 'A股' + (i + 1) + '月集合',
+      name: 'A股' + (i + 1) + '月',
       data: obj[i + 1]
     }],
     tooltip: {
