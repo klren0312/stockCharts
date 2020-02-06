@@ -1,0 +1,127 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Highstock Example</title>
+
+  <style type="text/css">
+    #container {
+      max-height: 800px;
+      height: 75vh;
+    }
+
+    /* Conflict with Bootstrap, not needed after v7.0.1 */
+    .highcharts-bindings-wrapper * {
+      box-sizing: content-box;
+    }
+
+    .hide {
+      display: none;
+    }
+
+    .month-chart {
+      margin-top: 20px;
+    }
+
+    .tab {
+      margin: 0;
+      padding: 0;
+      padding-top: 40px;
+      list-style: none;
+    }
+
+    .tab:after {
+      content: '';
+      clear: both;
+      display: block;
+    }
+
+    .tab li {
+      margin-right: 10px;
+      float: left;
+      width: 80px;
+      height: 40px;
+      line-height: 40px;
+      color: #333;
+      text-align: center;
+      background: #dfdfdf;
+      cursor: pointer;
+      transition: all .3s ease;
+    }
+
+    .tab li.active,
+    .tab li:hover {
+      color: #fff;
+      font-weight: bolder;
+      background-image: linear-gradient( 135deg, #CE9FFC 10%, #7367F0 100%);
+    }
+  </style>
+  <link rel="stylesheet" type="text/css" href="./code/css/annotations/popup.css">
+</head>
+
+<body>
+  <div id="container" class="chart"></div>
+
+  <ul class="tab">
+    <li class="active" id="js-month-1" onclick="tabSelect(1)">1月集合</li>
+    <li id="js-month-2" onclick="tabSelect(2)">2月集合</li>
+    <li id="js-month-3" onclick="tabSelect(3)">3月集合</li>
+    <li id="js-month-4" onclick="tabSelect(4)">4月集合</li>
+    <li id="js-month-5" onclick="tabSelect(5)">5月集合</li>
+    <li id="js-month-6" onclick="tabSelect(6)">6月集合</li>
+    <li id="js-month-7" onclick="tabSelect(7)">7月集合</li>
+    <li id="js-month-8" onclick="tabSelect(8)">8月集合</li>
+    <li id="js-month-9" onclick="tabSelect(9)">9月集合</li>
+    <li id="js-month-10" onclick="tabSelect(10)">10月集合</li>
+    <li id="js-month-11" onclick="tabSelect(11)">11月集合</li>
+    <li id="js-month-12" onclick="tabSelect(12)">12月集合</li>
+  </ul>
+
+  <div class="block">
+    <div class="month-chart" id="m1"></div>
+    <div class="month-chart hide" id="m2"></div>
+    <div class="month-chart hide" id="m3"></div>
+    <div class="month-chart hide" id="m4"></div>
+    <div class="month-chart hide" id="m5"></div>
+    <div class="month-chart hide" id="m6"></div>
+    <div class="month-chart hide" id="m7"></div>
+    <div class="month-chart hide" id="m8"></div>
+    <div class="month-chart hide" id="m9"></div>
+    <div class="month-chart hide" id="m10"></div>
+    <div class="month-chart hide" id="m11"></div>
+    <div class="month-chart hide" id="m12"></div>
+  </div>
+
+  <script src="./code/highstock.js"></script>
+  <script src="./code/modules/data.js"></script>
+
+  <script src="./code/indicators/indicators-all.js"></script>
+  <script src="./code/modules/drag-panes.js"></script>
+
+  <script src="./code/modules/annotations-advanced.js"></script>
+  <script src="./code/modules/price-indicator.js"></script>
+  <script src="./code/modules/full-screen.js"></script>
+  <script src="./code/modules/exporting.js"></script>
+  <script src="./code/highcharts-zh_CN.js"></script>
+  <script src="./code/themes/dark-unica.js"></script>
+  <script src="./data.js"></script>
+  <script src="./chartinit.js"></script>
+  <script type="text/javascript">
+    function tabSelect(month) {
+      var monthCharts = document.querySelectorAll('.month-chart')
+      var activeSelects = document.querySelector('li.active')
+      if (activeSelects) activeSelects.classList.remove('active')
+      document.querySelector('#js-month-' + month).classList.add('active')
+      monthCharts.forEach(function (v) {
+        if (!v.classList.contains('hide')) {
+          v.classList.add('hide')
+        }
+      })
+      document.querySelector('#m' + month).classList.remove('hide')
+    }
+  </script>
+</body>
+
+</html>

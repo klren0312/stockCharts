@@ -1,1 +1,9 @@
-# stockCharts
+# A股多年数据图表
+
+数据来源:
+ 
+ - 雅虎财经
+
+使用技术:
+
+ - highStock
