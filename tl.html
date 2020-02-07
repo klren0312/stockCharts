@@ -46,7 +46,7 @@
       },
       methods: {
         async getXq() {
-          const xq = await axios.post('http://kz.qswh.net.cn:9090/register/getCity?parendId=101').then(res => res.data.object)
+          const xq = await axios.post('http://122.51.46.108:8989/register/getCity?parendId=101').then(res => res.data.object)
           xq.forEach((v, i) => {
             v.children = []
             v.id = i + ''
@@ -55,12 +55,12 @@
         },
         async getYf () {
           this.tableData.forEach(async (v, i) => {
-            const yf = await axios.post('http://kz.qswh.net.cn:9090/register/getCity?parendId=' + v.deptId).then(res => res.data.object)
+            const yf = await axios.post('http://122.51.46.108:8989/register/getCity?parendId=' + v.deptId).then(res => res.data.object)
             yf.forEach(async (u, j) => {
               u.id = i + '000' + j
               u.searchValue = '正在获取...'
               u.email = '正在获取...'
-              const nums = await axios.post('http://kz.qswh.net.cn:9090/register/getCityInfo?deptId=' + u.deptId).then(res => res.data.object)
+              const nums = await axios.post('http://122.51.46.108:8989/register/getCityInfo?deptId=' + u.deptId).then(res => res.data.object)
               u.searchValue = nums.searchValue
               u.email = nums.email
             })
@@ -68,7 +68,7 @@
           })
         },
         toOrder () {
-          window.open('http://kz.qswh.net.cn:9090/register?from=groupmessage')
+          window.open('http://122.51.46.108:8989/register?from=groupmessage')
         }
 
       }
