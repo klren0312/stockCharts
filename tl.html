@@ -32,7 +32,7 @@
     <div>2. 可以在预填写中选择药房, 随后点击快速预约可直接预约!!!</div>
     <div class="header">
       <div class="btn"><el-button size="mini" type="danger" @click="open">信息预填写</el-button></div>
-      <div class="btn"><el-button size="mini" @click="refresh">刷新数据(请不要在接近预约时间时刷新!)</el-button></div>
+      <div class="btn"><el-button size="mini" @click="refresh">刷新(不要在9:00刷新)</el-button></div>
       <div class="btn"><el-button size="mini" @click="closeAndOpen"><span v-if="closeStatus">展开</span><span v-else>收起</span>小区</el-button></div>
     </div>
     <el-button class="qbtn" type="warning" @click="quickOrder">快速预约</el-button>
