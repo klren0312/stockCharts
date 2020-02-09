@@ -41,7 +41,7 @@
       <el-table-column prop="deptName" label="药店名称" min-width="200">
         <template slot-scope="scope">
           <div>
-            <strong v-if="scope.row.searchValue">{{scope.row.deptName}}</strong>
+            <strong >{{scope.row.deptName}}</strong>
             <span v-if="scope.row.searchValue"> (剩余预约数量: {{scope.row.searchValue}} 个)</span>
           </div>
         </template>
