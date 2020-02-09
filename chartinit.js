@@ -88,9 +88,16 @@ for (var i = 0; i < 12; i++) {
       offset: 0
     }],
     series: [{
-      type: 'line',
+      type: 'candlestick',
       name: 'A股' + (i + 1) + '月',
-      data: obj[i + 1]
+      data: obj[i + 1],
+      color: 'green',
+      lineColor: 'green',
+      upColor: 'red',
+      upLineColor: 'red',
+      navigatorOptions: {
+        color: Highcharts.getOptions().colors[0]
+      }
     }],
     tooltip: {
       dateTimeLabelFormats:{
