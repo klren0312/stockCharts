@@ -7,6 +7,10 @@
   <title>铜官区口罩预约状态查看</title>
   <link href="./js/ele.css" rel="stylesheet">
   <style>
+    body {
+      background-image: linear-gradient( 135deg, #43CBFF 10%, #9708CC 100%);
+      color: #fff;
+    }
     .header {
       padding: 20px;
       display: flex;
@@ -28,11 +32,14 @@
 
 <body>
   <div id="app">
-    <div><strong>注意:</strong>1. 先点击预填写填写信息, 然后在表格相应的药房后点击预约按钮即可预约</div>
-    <div>2. 可以在预填写中选择药房, 随后点击快速预约可直接预约!!!</div>
+    <strong>注意:</strong>
+    <div>方法1. 先点击预填写填写信息, 然后在表格相应的药房后点击预约按钮即可预约</div>
+    <div>方法2. 可以在预填写中选择药房, 随后点击快速预约可直接预约!!!</div>
+    <div>治电平台预约成功人数: <strong>{{hasSuccessNum * 10}}</strong>  位, 共助力获取口罩数约 <strong> {{hasSuccessNum * 5 * 10}} </strong>个;</div>
+    <div>治电科技, 无知, 无畏, 自负, 自强!</div>
     <div class="header">
-      <div class="btn"><el-button size="mini" type="danger" @click="open">信息预填写</el-button></div>
-      <div class="btn"><el-button size="mini" @click="refresh">刷新(不要在9:00刷新)</el-button></div>
+      <div class="btn"><el-button size="mini" type="danger" @click="open">预填写</el-button></div>
+      <div class="btn"><el-button size="mini" @click="refresh">刷新(9点勿刷新)</el-button></div>
       <div class="btn"><el-button size="mini" @click="closeAndOpen"><span v-if="closeStatus">展开</span><span v-else>收起</span>小区</el-button></div>
     </div>
     <el-button class="qbtn" type="warning" @click="quickOrder">快速预约</el-button>
@@ -102,7 +109,10 @@
   <script src="./js/vue.min.js"></script>
   <script src="./js/axios.js"></script>
   <script src="./js/ele.js"></script>
+  <script src="./js/bmob.js"></script>
   <script>
+    Bmob.initialize('119947231f592fd5', 'qwer12')
+    const query = Bmob.Query('success');
     new Vue({
       el: '#app',
       data() {
@@ -119,7 +129,8 @@
           },
           closeStatus: false,
           selectXq: '',
-          yf: ''
+          yf: '',
+          hasSuccessNum: 0
         }
       },
       async mounted() {
@@ -131,6 +142,12 @@
         } catch (error) {}
         await this.getXq()
         await this.getYf()
+
+        query.get('NeQg1115')
+          .then(res => res.num)
+          .then(n => {
+            this.hasSuccessNum = n
+          })
       },
       methods: {
         closeAndOpen () {
@@ -174,6 +191,13 @@
           })
           const result = await axios.post(`${this.ROOTURL}/register/login`, params).then(res => res.data)
           this.$message.error(result.msg)
+          if (result.msg.match('成功')) {
+            query.set('id', 'NeQg1115') //需要修改的objectId
+              query.set('num', ++this.hasSuccessNum)
+              query.save().then(res => {
+              }).catch(err => {
+              })
+          }
         },
         async quickOrder () {
           const params = new URLSearchParams()
