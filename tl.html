@@ -35,7 +35,7 @@
     <strong>注意:</strong>
     <div>方法1. 先点击预填写填写信息, 然后在表格相应的药房后点击预约按钮即可预约</div>
     <div>方法2. 可以在预填写中选择药房, 随后点击快速预约可直接预约!!!</div>
-    <div>治电平台预约成功人数: <strong>{{hasSuccessNum * 10}}</strong>  位, 共助力获取口罩数约 <strong> {{hasSuccessNum * 5 * 10}} </strong>个;</div>
+    <div>治电平台预约成功人数: <strong>{{hasSuccessNum * 3}}</strong>  位, 共助力获取口罩数约 <strong> {{hasSuccessNum * 5 * 3}} </strong>个;</div>
     <div>治电科技, 无知, 无畏, 自负, 自强!</div>
     <div class="header">
       <div class="btn"><el-button size="mini" type="danger" @click="open">预填写</el-button></div>
@@ -191,12 +191,13 @@
           })
           const result = await axios.post(`${this.ROOTURL}/register/login`, params).then(res => res.data)
           this.$message.error(result.msg)
-          if (result.msg.match('成功')) {
-            query.set('id', 'NeQg1115') //需要修改的objectId
-              query.set('num', ++this.hasSuccessNum)
-              query.save().then(res => {
-              }).catch(err => {
-              })
+          if (result.msg.match('成功') || result.msg.match('再次')) {
+            query.get('NeQg1115').then(res => {
+              res.increment('num')
+              res.save()
+            }).catch(err => {
+              console.log(err)
+            })
           }
         },
         async quickOrder () {
@@ -205,6 +206,14 @@
             params.append(v, this.form[v])
           })
           const result = await axios.post(`${this.ROOTURL}/register/login`, params).then(res => res.data)
+          if (result.msg.match('成功') || result.msg.match('再次')) {
+            query.get('NeQg1115').then(res => {
+              res.increment('num')
+              res.save()
+            }).catch(err => {
+              console.log(err)
+            })
+          }
           this.$message.error(result.msg)
         },
         open () {
