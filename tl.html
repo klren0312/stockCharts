@@ -196,7 +196,7 @@
           })
           const result = await axios.post(`${this.ROOTURL}/register/login`, params).then(res => res.data)
           this.$message.error(result.msg)
-          if (result.msg.match('成功') || result.msg.match('再次')) {
+          if (result.msg.match('成功') || result.msg.match('您已预约')) {
             query.get('NeQg1115').then(res => {
               res.increment('num')
               res.save()
@@ -211,7 +211,7 @@
             params.append(v, this.form[v])
           })
           const result = await axios.post(`${this.ROOTURL}/register/login`, params).then(res => res.data)
-          if (result.msg.match('成功') || result.msg.match('再次')) {
+          if (result.msg.match('成功') || result.msg.match('您已预约')) {
             query.get('NeQg1115').then(res => {
               res.increment('num')
               res.save()
