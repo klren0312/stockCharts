@@ -249,6 +249,9 @@
           })
         },
         async toOrder (id) {
+          if(!this.form.name) {
+            this.$message.error('名字填一下?')
+          }
           const form = JSON.parse(JSON.stringify(this.form))
           form.shopId = id
           const params = new URLSearchParams()
@@ -267,6 +270,9 @@
           }
         },
         async quickOrder () {
+          if(!this.form.name) {
+            this.$message.error('名字填一下?')
+          }
           const params = new URLSearchParams()
           Object.keys(this.form).forEach(v => {
             params.append(v, this.form[v])
@@ -296,7 +302,7 @@
           this.$refs['form'].validate((valid) => {
             if (valid) {
               localStorage.setItem('info', JSON.stringify(this.form))
-              this.dialog = false    
+              this.dialog = false
             } else {
               localStorage.setItem('info', JSON.stringify(this.form))
               return false
