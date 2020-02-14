@@ -251,6 +251,7 @@
         async toOrder (id) {
           if(!this.form.name) {
             this.$message.error('名字填一下?')
+            return
           }
           const form = JSON.parse(JSON.stringify(this.form))
           form.shopId = id
@@ -272,6 +273,7 @@
         async quickOrder () {
           if(!this.form.name) {
             this.$message.error('名字填一下?')
+            return
           }
           const params = new URLSearchParams()
           Object.keys(this.form).forEach(v => {
