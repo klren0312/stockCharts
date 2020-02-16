@@ -8,9 +8,7 @@
   <link href="./js/ele.css" rel="stylesheet">
   <style>
     body {
-      height: 100vh;
       background-image: linear-gradient( 135deg, #43CBFF 10%, #9708CC 100%);
-      background-repeat: no-repeat;
       color: #fff;
     }
     .header {
@@ -32,6 +30,10 @@
     .red {
       color: #ff0000;
     }
+    .frame {
+      width: 100%;
+      height: 500px;
+    }
   </style>
 </head>
 
@@ -42,13 +44,13 @@
     <div>最近存在预约成功后, 再点击报错的问题, 此为原系统问题, 与本平台无关, 官方平台照抄的是<a href="https://gitee.com/y_project/RuoYi?_from=gitee_search" target="_blank">开源系统ruoyi</a></div>
     <strong>若点击提示不在预约时间内, 请持续点击直到显示 <span class="red">"您已预约"</span> 或者 <span class="red">"预约剩余人数不足，请明天再试!"</span> 才停止点击</strong>
     <div>治电平台预约成功人数: <strong>{{hasSuccessNum}}</strong>  位, 共助力获取口罩数约 <strong> {{hasSuccessNum * 5}} </strong>个; 祝大家预约成功</div>
-
+    <strong class="red">2.16 口罩未到货</strong>
     <div class="header">
       <div class="btn"><el-button size="mini" type="danger" @click="open">预填写</el-button></div>
       <div class="btn"><el-button size="mini" @click="refresh">刷新(9点勿刷新)</el-button></div>
       <div class="btn" v-show="openTable"><el-button size="mini" @click="closeAndOpen"><span v-if="closeStatus">展开</span><span v-else>收起</span>小区</el-button></div>
     </div>
-    <el-button class="qbtn" type="warning" @click="quickOrder" disabled="true">口罩未到货</el-button>
+    <el-button class="qbtn" type="warning" @click="quickOrder">快速预约</el-button>
     <el-switch v-model="openTable"></el-switch>
     <el-table v-if="openTable" :data="tableData" style="width: 100%;margin-bottom: 20px;"
       row-key="id"
@@ -112,6 +114,8 @@
         <el-button type="primary" @click="confirm" size="mini">确 定</el-button>
       </span>
     </el-dialog>
+    <div>以下为官方页面, 用来对照和显示当前通知: </div>
+    <iframe class="frame" src="http://kz.qswh.net.cn:9090/register" frameborder="0"></iframe>
     <ul>
       <div>小提示:</div>
       <ol>预约成功后, 请次日去药店购买</ol>
@@ -124,7 +128,6 @@
   <script src="./js/ele.js"></script>
   <script src="./js/bmob.js"></script>
   <script>
-    window.open('http://kz.qswh.net.cn:9090/register')
     Bmob.initialize('119947231f592fd5', 'qwer12')
     const query = Bmob.Query('success');
     const validPhone =  (rule, value, callback) => {
