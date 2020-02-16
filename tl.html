@@ -48,7 +48,7 @@
       <div class="btn"><el-button size="mini" @click="refresh">刷新(9点勿刷新)</el-button></div>
       <div class="btn" v-show="openTable"><el-button size="mini" @click="closeAndOpen"><span v-if="closeStatus">展开</span><span v-else>收起</span>小区</el-button></div>
     </div>
-    <el-button class="qbtn" type="warning" @click="quickOrder">快速预约</el-button>
+    <el-button class="qbtn" type="warning" @click="quickOrder" disabled="true">口罩未到货</el-button>
     <el-switch v-model="openTable"></el-switch>
     <el-table v-if="openTable" :data="tableData" style="width: 100%;margin-bottom: 20px;"
       row-key="id"
