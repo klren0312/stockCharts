@@ -41,16 +41,17 @@
   <div id="app">
     <strong>注意:</strong>
     <div>可以在预填写中选择药房, 随后点击快速预约可直接预约!!!</div>
-    <div>最近存在预约成功后, 再点击报错的问题, 此为原系统问题, 与本平台无关, 官方平台照抄的是<a href="https://gitee.com/y_project/RuoYi?_from=gitee_search" target="_blank">开源系统ruoyi</a></div>
     <strong>若点击提示不在预约时间内, 请持续点击直到显示 <span class="red">"您已预约"</span> 或者 <span class="red">"预约剩余人数不足，请明天再试!"</span> 才停止点击</strong>
     <div>治电平台预约成功人数: <strong>{{hasSuccessNum}}</strong>  位, 共助力获取口罩数约 <strong> {{hasSuccessNum * 5}} </strong>个; 祝大家预约成功</div>
-    <strong class="red">2.16 口罩未到货</strong>
     <div class="header">
       <div class="btn"><el-button size="mini" type="danger" @click="open">预填写</el-button></div>
       <div class="btn"><el-button size="mini" @click="refresh">刷新(9点勿刷新)</el-button></div>
       <div class="btn" v-show="openTable"><el-button size="mini" @click="closeAndOpen"><span v-if="closeStatus">展开</span><span v-else>收起</span>小区</el-button></div>
     </div>
     <el-button class="qbtn" type="warning" @click="quickOrder">快速预约</el-button>
+    <div>
+      <el-button class="qbtn" type="success" @click="autoOrder">自动预约</el-button>
+    </div>
     <el-switch v-model="openTable"></el-switch>
     <el-table v-if="openTable" :data="tableData" style="width: 100%;margin-bottom: 20px;"
       row-key="id"
@@ -114,14 +115,6 @@
         <el-button type="primary" @click="confirm" size="mini">确 定</el-button>
       </span>
     </el-dialog>
-    <div>以下为官方页面, 用来对照和显示当前通知: </div>
-    <iframe class="frame" src="http://kz.qswh.net.cn:9090/register" frameborder="0"></iframe>
-    <ul>
-      <div>小提示:</div>
-      <ol>预约成功后, 请次日去药店购买</ol>
-      <ol>购买后三日之后, 才能再次预约, 请不要每天进来点, 抢占流量</ol>
-      <ol>目前从技术层面看, 从官方平台和本平台预约的速度基本持平, 可以使用官方平台</ol>
-    </ul>
   </div>
   <script src="./js/vue.min.js"></script>
   <script src="./js/axios.js"></script>
@@ -181,6 +174,8 @@
       el: '#app',
       data() {
         return {
+          autoStatus: false,
+          autoTimer: null,
           tableData: [],
           ROOTURL: 'http://122.51.46.108:8989',
           dialog: false,
@@ -229,6 +224,42 @@
           })
       },
       methods: {
+        autoOrder () {
+          if(!this.form.name) {
+            this.$message.error('名字填一下?')
+            return
+          }
+          if ((new Date().getHours() < 8 && new Date().getMinutes() < 50) || new Date().getHours() > 9) {
+            this.$message.error('当前时间段不可以进行自动预约!!!')
+            this.autoTimer && clearInterval(this.autoTimer)
+            return
+          } 
+          this.autoTimer = setInterval( async () => {
+            const params = new URLSearchParams()
+            Object.keys(this.form).forEach(v => {
+              params.append(v, this.form[v])
+            })
+            const result = await axios.post(`${this.ROOTURL}/register/login`, params).then(res => res.data)
+            if (result.msg.match('成功') || result.msg.match('您已预约')) {
+              clearInterval(this.autoTimer)
+              query.get('NeQg1115').then(res => {
+                res.increment('num')
+                res.save()
+              }).catch(err => {
+                console.log(err)
+              })
+            } else if (result.msg.match('不足')) {
+              clearInterval(this.autoTimer)
+            } else if ((new Date().getHours() < 8 && new Date().getMinutes() < 50) || new Date().getHours() > 9) {
+              this.$message.error('当前时间段不可以进行自动预约!!!')
+              clearInterval(this.autoTimer)
+            } else if (new Date().getHours() === 9 && new Date().getMinutes() === 1) {
+              clearInterval(this.autoTimer)
+            }
+            this.$message.error(result.msg)
+          }, 200)
+          
+        },
         closeAndOpen () {
           this.closeStatus = !this.closeStatus
           this.tableData.forEach(v => {
